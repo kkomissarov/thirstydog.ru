@@ -1,0 +1,154 @@
+{% extends 'public/index.html' %}
+{% load static %}
+
+{% block seo_title %}{{mainpage_settings.seo_title}}{% endblock seo_title%}
+
+{% block seo_description %}{{mainpage_settings.seo_description}}{% endblock seo_description%}
+
+
+{% block content %}
+    <section class="first-screen">
+		<div class="hello-msg-wrapper align-items-center">
+			<div class="container align-self-center">
+				<div class="row">
+					<div class="col-12 text-center hello-msg">
+						<h1>{{mainpage_settings.firstscreen_title}}</h1>
+						<p>{{mainpage_settings.firstscreen_text}}</p>
+
+						<button class="btn sharp-btn" id="to_shop_btn">
+							{{mainpage_settings.firstscreen_button_txt}}
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</section>
+
+
+	<section class="logical-block">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 text-center" id="shop_block">
+					<h2>{{mainpage_settings.cat_title}}</h2>
+				</div>
+
+				<div class="col-12 col-lg-6 m-auto mb-md-5 lead-description text-center">
+					{{mainpage_settings.cat_text}}
+				</div>
+			</div>
+		</div>
+
+
+		<div class="container mt-5">
+			<div class="row">
+
+
+				{% for category in category_showcase %}
+				<div class="col-sm-6 col-lg-4 mb-4">
+					<div class="category-link-wrapper">
+						<img src="{% if category.img %}{{category.img.url}}{% else %}{% static 'img/default-quadro.jpg'%}{% endif %}">
+						<div class="dark-bg"></div>
+						<div class="flex-wrapper">
+							<div class="align-self-center text-center full-width">
+								<span class="big-white-text">{{category.name}}</span>
+							</div>
+						</div>
+						<a href="{{category.get_absolute_url}}" class="block-link"></a>
+					</div>
+				</div>
+				{% endfor  %}
+
+
+
+			</div>
+		</div>
+
+	</section>
+
+
+	<section class="logical-block gray-bg about">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5 align-self-center">
+					<h2>{{mainpage_settings.about_title}}</h2>
+					<p>{{mainpage_settings.about_text}}</p>
+				</div>
+
+				<div class="col-md-6 offset-md-1 align-self-center">
+					<img src="{{mainpage_settings.about_img.url}}">
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+
+	<section class="logical-block">
+		<div class="container">
+			<div class="row">
+
+				<div class="col-12 col-lg-8 m-auto text-center">
+					<h2>{{mainpage_settings.subscribe_title}}</h2>
+					<p class="lead-description">{{mainpage_settings.subscribe_text}}</p>
+
+					<form action="" method="post" class="row subscribe_form">
+
+						{% csrf_token %}
+
+						<div class="col-12 col-lg-8 mb-3 mb-lg-0">
+							{{subscribe_form.email}}
+						</div>
+
+						<div class="col-12 col-lg-4">
+							<button>Подписаться</button>
+						</div>
+
+					</form>
+
+					<div class="subscribe-msg text-left mt-3"></div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+<script>
+	$(document).ready(function(){
+		$('.subscribe_form').on('submit', function(e){
+		    e.preventDefault();
+			var data = $(this).serialize();
+			$('.subscribe-msg').removeClass('success');
+			$('.subscribe-msg').removeClass('error');
+
+			$.ajax({
+				type: 'post',
+				url: '{% url 'subscribe_view' %}',
+				data: data,
+				success: function(data){
+				    $('.subscribe-msg').addClass(data['status']);
+					$('.subscribe-msg').text(data['message']);
+				}
+			});
+
+		});
+	});
+</script>
+
+{% endblock content %}
+
+{% block custom_css %}
+	<style>
+		.first-screen{
+			background-image: url({{mainpage_settings.firstscreen_img.url}});
+		}
+
+		button.sharp-btn{
+			background: #{{mainpage_settings.firstscreen_button_color}};
+		}
+
+		button.sharp-btn:hover{
+			background: #{{mainpage_settings.firstscreen_button_hover_color}};
+		}
+	</style>
+{% endblock custom_css %}

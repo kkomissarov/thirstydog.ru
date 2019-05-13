@@ -1,0 +1,106 @@
+{% extends 'thirsty/index.html' %}
+{% load static%}
+
+
+{% block body %}
+<body>
+
+	<nav class="pt-3 pb-3 container-fluid desktop-nav dark-nav">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="container">
+					<div class="row">
+
+						<div class="col-2 text-left logo align-self-center">
+							<a href="{% url 'main_page'%}">
+								<img src="{{site_settings.logo.url}}" alt="Логотип" style="width:{{site_settings.logo_width_desktop}}px;">
+							</a>
+						</div>
+
+
+						<div class="col-10 text-right top-menu-wrapper align-self-center">
+							<ul class="top-menu pull-left">
+
+
+								{% for item in catalog_menu_items %}
+									<li><a href="{{item.get_absolute_url}}">{{item.name}}</a></li>
+								{% endfor %}
+
+								{% for item in top_menu_items %}
+									<li><a href="{{item.get_absolute_url}}">{{item.name}}</a></li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+
+	<nav class="container-fluid mobile-nav">
+		<div class="row">
+			<div class="col text-right">
+				<div class="sandwich-menu">
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
+			</div>
+		</div>
+
+		<div class="row mobile-menu-wrapper">
+			<div class="col-12">
+				<ul class="mobile-menu">
+
+					<li>
+						<a href="#">
+							<img src="{{site_settings.logo.url}}" class="mobile-logo" style="width:{{site_settings.logo_width_mobile}}px;">
+						</a>
+					</li>
+
+					{% for item in catalog_menu_items %}
+						<li><a href="{{item.get_absolute_url}}">{{item.name}}</a></li>
+					{% endfor %}
+
+					{% for item in top_menu_items %}
+						<li><a href="{{item.get_absolute_url}}">{{item.name}}</a></li>
+					{% endfor %}
+					<li>
+						<ul class="social-link mobile-social-links">
+							{{ site_settings.footer_social|safe }}
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+    {% block content %}    {% endblock content %}
+
+
+	<section class="logical-block footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 text-center">
+
+					<p class="contact_email"> {{site_settings.footer_mail}} </p>
+
+					<ul class="social-link">
+
+						{{ site_settings.footer_social|safe }}
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+{% endblock body %}
+
+
+
+
+

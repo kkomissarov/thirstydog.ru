@@ -1,0 +1,28 @@
+{% extends 'public/index.html' %}
+{% load static %}
+
+
+{% block seo_title %}{{object.seo_title}}{% endblock seo_title%}
+
+{% block seo_description %}{{object.seo_description}}{% endblock seo_description%}
+
+
+
+{% block content %}
+
+<section class="logical-block about">
+	<div class="container">
+        <div class="row">
+
+            <div class="col-12 col-md-6">
+            <h1>{{object.name}}</h1>
+
+                <div>
+                    <p>{{object.content|linebreaksbr}}</p>
+                </div>
+           </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

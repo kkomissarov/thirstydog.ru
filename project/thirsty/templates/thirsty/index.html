@@ -1,0 +1,51 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width">
+	
+	<title>{% block seo_title %} {% endblock seo_title%}</title>
+	<meta name="description" content="{% block seo_description %} {% endblock seo_description%}">
+
+	<!-- Local -->
+	<link rel="stylesheet" href="{%static 'css/styles.css'%}">
+	<link rel="stylesheet" href="{%static 'css/media.css'%}">
+	<link rel="stylesheet" href="{%static 'lib/bootstrap-4.3.1-dist/css/bootstrap.css'%}">
+	<link rel="stylesheet" type="text/css" href="{%static 'lib/slick-1.8.1/slick/slick.css'%}">
+	<link rel="stylesheet" type="text/css" href="{%static 'lib/slick-1.8.1/slick/slick-theme.css'%}">
+	<link rel="stylesheet" type="text/css" href="{%static 'lib/fancybox-master/dist/jquery.fancybox.min.css' %}">
+
+	
+
+	<!-- CDN -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&amp;subset=cyrillic" rel="stylesheet">
+
+	<script src="{%static 'js/jquery-3.3.1.min.js'%}"></script>
+
+	{% block custom_head %} {% endblock custom_head %}
+
+	{% block user_head %}
+            {% if site_settings.custom_html %}
+                {{site_settings.custom_html|safe}}
+	    {% endif %}
+	{% endblock user_head %}
+
+</head>
+
+
+<body>
+
+	{% block body %} {% endblock body %}
+	{% block custom_css %} {% endblock custom_css %}
+
+
+	<script src="{%static 'js/common.js'%}"></script>
+	<script src="{%static 'lib/slick-1.8.1/slick/slick.min.js'%}"></script>
+	<script src="{%static 'lib/fancybox-master/dist/jquery.fancybox.min.js' %}"></script>
+
+
+</body>
+</html>

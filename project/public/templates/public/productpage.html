@@ -1,0 +1,148 @@
+{% extends 'public/index.html' %}
+{% load static %}
+{% load public_extras %}
+
+
+{% block seo_title %}{{object.seo_title}}{% endblock seo_title%}
+
+{% block seo_description %}{{object.seo_description}}{% endblock seo_description%}
+
+
+
+{% block content %}
+<section class="logical-block">
+	<div class="container">
+
+		<div class="row d-none d-sm-flex">
+			<div class="col-12">
+				<ul class="breadcrumbs">
+					<li><a href="{% url 'main_page' %}">Главная</a></li>
+
+					{% for breadcrumb in object.breadcrumb_category.get_all_parents %}
+                 	 	<li><a href="{{breadcrumb.get_absolute_url}}">{{breadcrumb.name}}</a></li>
+                	{% endfor %}
+
+					<li><a href="{{object.breadcrumb_category.get_absolute_url}}">{{object.breadcrumb_category.name}}</a></li>
+
+					<li>{{object.name}}</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="row">
+
+			<div class="col-12 col-md-6">
+				<div class="product-showcase">
+
+					<div class="slider-for">
+                        {% for image in object.images.all %}
+						    <div><img src="{{image.image.url}}" alt=""></div>
+                        {% endfor %}
+					</div>
+
+					<div class="slider-nav">
+                        {% for image in object.images.all %}
+						    <div><img src="{{image.image.url}}" alt=""></div>
+                        {% endfor %}
+					</div>
+
+				</div>
+			</div>
+
+			<div class="col-12 col-md-6 mt-3 mt-md-0">
+				<div class="product-description">
+					<h1>{{object.name}}</h1>
+
+					<div class="price">
+						{{object.price|price_format}}
+					</div>
+
+
+					<div class="product-txt mb-4">
+
+
+						<p>{{object.text_description|linebreaksbr}}</p>
+					</div>
+
+
+
+					<div class="product-sizes mb-4">
+						<h2>Доступные размеры</h2>
+						<p>XS -
+							{% ifequal object.xs_status 'В наличии' %}
+								<span class="available">В наличии</span>
+							{% else %}
+								<span class="unavailable">Под заказ</span>
+							{% endifequal %}
+
+						</p>
+
+						<p>S -
+							{% ifequal object.s_status 'В наличии' %}
+								<span class="available">В наличии</span>
+							{% else %}
+								<span class="unavailable">Под заказ</span>
+							{% endifequal %}
+						</p>
+
+						<p>M -
+							{% ifequal object.m_status 'В наличии' %}
+								<span class="available">В наличии</span>
+							{% else %}
+								<span class="unavailable">Под заказ</span>
+							{% endifequal %}
+						</p>
+
+						<p>L -
+							{% ifequal object.l_status 'В наличии' %}
+								<span class="available">В наличии</span>
+							{% else %}
+								<span class="unavailable">Под заказ</span>
+							{% endifequal %}
+						</p>
+
+						<p>XL -
+							{% ifequal object.xl_status 'В наличии' %}
+								<span class="available">В наличии</span>
+							{% else %}
+								<span class="unavailable">Под заказ</span>
+							{% endifequal %}
+						</p>
+
+					</div>
+
+
+
+
+					<div class="order">
+						<button class="btn order-btn" data-fancybox data-src="#order-form-wrapper">Заказать</button>
+					</div>
+
+
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+</section>
+
+<div style="display: none;" id="order-form-wrapper">
+	<form action="" method="post" class="order-form text-center">
+		{% csrf_token %}
+		<h2>Оставьте заявку</h2>
+		<p>Оставьте свой номер телефона и мы перезвоним вам в ближайшее время</p>
+		<p>{{order_form.name}}</p>
+		<p>{{order_form.phone}}</p>
+		<input type="hidden" name="product" value="{{object.name}}">
+		<p><button type="submit" class="btn order-btn btn-full-width">Отправить</button></p>
+	</form>
+
+	<div id="order-status"></div>
+</div>
+
+<script>
+	var create_order_url = '{% url 'order_view' %}'
+</script>
+
+{% endblock content %}

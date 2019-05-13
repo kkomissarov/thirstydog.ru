@@ -1,0 +1,113 @@
+{% extends 'public/index.html' %}
+{% load static %}
+{% load public_extras %}
+
+
+{% block seo_title %}{{category.seo_title}}{% endblock seo_title%}
+
+{% block seo_description %}{{category.seo_description}}{% endblock seo_description%}
+
+{% block custom_head %}
+
+    {% if is_noindex %}
+        <meta name="robots" content="noindex, follow"><meta>
+    {% endif %}
+
+    {% if has_canonical %}
+            <link rel="canonical"
+            href="{{request.META.HTTP_HOST}}{{category.get_absolute_url}}{% if request.GET.page%}?page={{request.GET.page}}{% endif %}" />
+
+
+    {% endif %}
+
+{% endblock custom_head %}
+
+
+
+{% block content %}
+
+<section class="logical-block">
+
+        <div class="container">
+            <div class="row d-none d-sm-flex">
+                <div class="col-12">
+                    <ul class="breadcrumbs">
+                        <li><a href="{% url 'main_page' %}">Главная</a></li>
+
+                        {% for breadcrumb in category.get_all_parents %}
+                            <li><a href="{{breadcrumb.get_absolute_url}}">{{breadcrumb.name}}</a></li>
+                        {% endfor %}
+
+                        <li>{{category.name}}</li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+		<div class="container">
+			<div class="row">
+				<div class="col-12 text-center">
+					<h1>{{category.name}}</h1>
+				</div>
+
+				<div class="col-12 col-lg-6 m-auto lead-description mb-md-5 text-center">
+					{{category.top_text}}
+				</div>
+			</div>
+		</div>
+
+
+		<div class="container">
+			<div class="row">
+
+                {% for product in object_list %}
+
+				<div class="col-sm-6 col-lg-4 mb-4 mt-4 category-item">
+					<img src="{{product.images.first.image.url}}">
+					<h3 class="mb-2 mt-3">{{product.name}}</h3>
+					<p class="category-item-price">{{product.price|price_format}}</p>
+					<a href="{{product.get_absolute_url}}"></a>
+				</div>
+
+                {% endfor %}
+
+
+            </div>
+        </div>
+
+        {% if is_paginated %}
+            <nav class="container pagen">
+                <div class="row">
+                    <div class="col-12 text-center mt-3">
+                        <ul>
+                            {% for i in page_obj.paginator.page_range %}
+                                {% if page_obj.number == i %}
+                                    <li class="active">{{i}}</li>
+                                {% else %}
+                                    {% if i == 1 %}
+                                        <li><a href="{{category.get_absolute_url}}">{{i}}</a></li>
+                                    {% else %}
+                                        <li><a href="{{category.get_absolute_url}}?page={{i}}">{{i}}</a></li>
+                                    {% endif %}
+
+                                {% endif %}
+                            {% endfor %}
+
+
+
+
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        {% endif %}
+
+
+</section>
+
+
+
+
+
+{% endblock content %}
